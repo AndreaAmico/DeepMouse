@@ -1,0 +1,837 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>@font-face {
+  font-family: octicons-anchor;
+  src: url(https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.woff) format('woff');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 980px;
+    margin-right: auto;
+    margin-left: auto;
+    color:#333;
+    background:#fff;
+}
+
+body .markdown-body {
+    padding: 45px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    word-wrap: break-word;
+}
+
+pre {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.markdown-body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background-color: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body input {
+  font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.markdown-body a {
+  color: #4078c0;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before {
+  display: table;
+  content: "";
+}
+
+.markdown-body hr:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.markdown-body .select::-ms-expand {
+  opacity: 0;
+}
+
+.markdown-body .octicon {
+  font: normal normal normal 16px/1 octicons-anchor;
+  display: inline-block;
+  text-decoration: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.markdown-body .octicon-link:before {
+  content: '\f05c';
+}
+
+.markdown-body:before {
+  display: table;
+  content: "";
+}
+
+.markdown-body:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.markdown-body .anchor {
+  display: inline-block;
+  padding-right: 2px;
+  margin-left: -18px;
+}
+
+.markdown-body .anchor:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .octicon-link,
+.markdown-body h2 .octicon-link,
+.markdown-body h3 .octicon-link,
+.markdown-body h4 .octicon-link,
+.markdown-body h5 .octicon-link,
+.markdown-body h6 .octicon-link {
+  color: #000;
+  vertical-align: middle;
+  visibility: hidden;
+}
+
+.markdown-body h1:hover .anchor,
+.markdown-body h2:hover .anchor,
+.markdown-body h3:hover .anchor,
+.markdown-body h4:hover .anchor,
+.markdown-body h5:hover .anchor,
+.markdown-body h6:hover .anchor {
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .anchor .octicon-link,
+.markdown-body h2:hover .anchor .octicon-link,
+.markdown-body h3:hover .anchor .octicon-link,
+.markdown-body h4:hover .anchor .octicon-link,
+.markdown-body h5:hover .anchor .octicon-link,
+.markdown-body h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h1 .anchor {
+  line-height: 1;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 .anchor {
+  line-height: 1;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h3 .anchor {
+  line-height: 1.2;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h4 .anchor {
+  line-height: 1.2;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h5 .anchor {
+  line-height: 1.1;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body h6 .anchor {
+  line-height: 1.1;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  box-sizing: content-box;
+  background-color: #fff;
+}
+
+.markdown-body code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .highlight {
+  margin-bottom: 16px;
+}
+
+.markdown-body .highlight pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+.markdown-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+.markdown-body .pl-c {
+  color: #969896;
+}
+
+.markdown-body .pl-c1,
+.markdown-body .pl-s .pl-v {
+  color: #0086b3;
+}
+
+.markdown-body .pl-e,
+.markdown-body .pl-en {
+  color: #795da3;
+}
+
+.markdown-body .pl-s .pl-s1,
+.markdown-body .pl-smi {
+  color: #333;
+}
+
+.markdown-body .pl-ent {
+  color: #63a35c;
+}
+
+.markdown-body .pl-k {
+  color: #a71d5d;
+}
+
+.markdown-body .pl-pds,
+.markdown-body .pl-s,
+.markdown-body .pl-s .pl-pse .pl-s1,
+.markdown-body .pl-sr,
+.markdown-body .pl-sr .pl-cce,
+.markdown-body .pl-sr .pl-sra,
+.markdown-body .pl-sr .pl-sre {
+  color: #183691;
+}
+
+.markdown-body .pl-v {
+  color: #ed6a43;
+}
+
+.markdown-body .pl-id {
+  color: #b52a1d;
+}
+
+.markdown-body .pl-ii {
+  background-color: #b52a1d;
+  color: #f8f8f8;
+}
+
+.markdown-body .pl-sr .pl-cce {
+  color: #63a35c;
+  font-weight: bold;
+}
+
+.markdown-body .pl-ml {
+  color: #693a17;
+}
+
+.markdown-body .pl-mh,
+.markdown-body .pl-mh .pl-en,
+.markdown-body .pl-ms {
+  color: #1d3e81;
+  font-weight: bold;
+}
+
+.markdown-body .pl-mq {
+  color: #008080;
+}
+
+.markdown-body .pl-mi {
+  color: #333;
+  font-style: italic;
+}
+
+.markdown-body .pl-mb {
+  color: #333;
+  font-weight: bold;
+}
+
+.markdown-body .pl-md {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.markdown-body .pl-mi1 {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.markdown-body .pl-mdr {
+  color: #795da3;
+  font-weight: bold;
+}
+
+.markdown-body .pl-mo {
+  color: #1d3e81;
+}
+
+.markdown-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+.markdown-body .plan-price-unit {
+  color: #767676;
+  font-weight: normal;
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 0.35em 0.25em -1.6em;
+  vertical-align: middle;
+}
+
+.markdown-body .plan-choice {
+  padding: 15px;
+  padding-left: 40px;
+  display: block;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  font-weight: normal;
+  background-color: #fafafa;
+}
+
+.markdown-body .plan-choice.open {
+  background-color: #fff;
+}
+
+.markdown-body .plan-choice.open .plan-choice-seat-breakdown {
+  display: block;
+}
+
+.markdown-body .plan-choice-free {
+  border-radius: 3px 3px 0 0;
+}
+
+.markdown-body .plan-choice-paid {
+  border-radius: 0 0 3px 3px;
+  border-top: 0;
+  margin-bottom: 20px;
+}
+
+.markdown-body .plan-choice-radio {
+  position: absolute;
+  left: 15px;
+  top: 18px;
+}
+
+.markdown-body .plan-choice-exp {
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.markdown-body .plan-choice-seat-breakdown {
+  margin-top: 10px;
+  display: none;
+}
+
+.markdown-body :checked+.radio-label {
+  z-index: 1;
+  position: relative;
+  border-color: #4078c0;
+}
+
+@media print {
+  body .markdown-body {
+    padding: 0;
+    border: none;
+  }
+}
+</style><title>README</title></head><body><article class="markdown-body"><h1>
+<a id="user-content-deep-mouse" class="anchor" href="#deep-mouse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DEEP MOUSE</h1>
+<h2>
+<a id="user-content-initial-structure" class="anchor" href="#initial-structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initial structure</h2>
+<ul>
+<li>Problem definition</li>
+<li>Identification of required data</li>
+<li>Data pre-processing</li>
+<li>Definition of the training, dev and test set</li>
+<li>Algorithm selection</li>
+<li>Training</li>
+<li>Evaluation with test set</li>
+</ul>
+<h3>
+<a id="user-content-problem-definition---01" class="anchor" href="#problem-definition---01" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Problem definition - 01</h3>
+<p>The goal of the algorithm is to identify if the laptop track-pad is used either with the right or the left hand.</p>
+<h3>
+<a id="user-content-identification-of-required-data---01" class="anchor" href="#identification-of-required-data---01" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Identification of required data - 01</h3>
+<p>Mouse position in time. List of x-y coordinates giving the absolute position of the mouse every ~10ms. The data are acquired for about 10 minutes by using the track-pad with the right hand while reading a technical blog post. The same is repeated by using the left hand. The total amount of samples is 120k (60k right, 60k left).
+The data are acquired using the win32gui library and stored in a <em>.txt</em> file via a python script:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> win32gui, time
+<span class="pl-k">with</span> <span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">'</span>./data/my_data.txt<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>) <span class="pl-k">as</span> f:
+    <span class="pl-k">for</span> _ <span class="pl-k">in</span> <span class="pl-c1">range</span>(number_of_samples):
+        x, y <span class="pl-k">=</span> win32gui.GetCursorPos()
+        f.write(<span class="pl-s"><span class="pl-pds">'</span><span class="pl-c1">{}</span>,<span class="pl-c1">{}</span><span class="pl-cce">\n</span><span class="pl-pds">'</span></span>.format(x, y))
+        time.sleep(<span class="pl-c1">0.01</span>)</pre></div>
+<p>Right hand data are saved on <em>./data/right.txt</em> file, left hand data on <em>./data/left.txt</em> file.
+As shown in the plot below the real time delay between subsequent acquisitions is not completely constant, moreover spikes are present.</p>
+<p><a href="///C://Users/aamico/Desktop/jupyter/time_series/mouse/plots/data_acquisition_stability.png" target="_blank" rel="noopener noreferrer"><img src="///C://Users/aamico/Desktop/jupyter/time_series/mouse/plots/data_acquisition_stability.png" alt="Data acquisition stability" style="max-width:100%;"></a></p>
+<p>A possible improvement might be achieved by a pure c acquisition program, which includes a time delay check every loop.</p>
+<h3>
+<a id="user-content-data-pre-processing---01" class="anchor" href="#data-pre-processing---01" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data pre-processing - 01</h3>
+<p>The full 20 minutes dataset is split in batches of 200 points each, corresponding to 2 seconds of mouse position acquisitions. Right and left hand data are merged together in a single dataset. For the moment we use raw data from the input device, being the absolute coordinate along the horizontal and vertical direction of the screen.</p>
+<hr>
+<p>Load of the mouse data from the <em>.txt</em> file using <strong>pandas</strong>:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> pandas <span class="pl-k">as</span> pandas
+right <span class="pl-k">=</span> pd.read_csv(<span class="pl-s"><span class="pl-pds">"</span>../data/right.txt<span class="pl-pds">"</span></span>, <span class="pl-v">header</span><span class="pl-k">=</span><span class="pl-c1">None</span>).values.tolist()
+left <span class="pl-k">=</span> pd.read_csv(<span class="pl-s"><span class="pl-pds">"</span>../data/left.txt<span class="pl-pds">"</span></span>, <span class="pl-v">header</span><span class="pl-k">=</span><span class="pl-c1">None</span>).values.tolist()</pre></div>
+<p>Splitting the data in 600 batches containing 200 data-points each:</p>
+<div class="highlight highlight-source-python"><pre>batch_size <span class="pl-k">=</span> <span class="pl-c1">200</span>
+batch_right <span class="pl-k">=</span> [right[i:i <span class="pl-k">+</span> batch_size] <span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-c1">0</span>, <span class="pl-c1">len</span>(right), batch_size)]
+batch_left <span class="pl-k">=</span> [left[i:i <span class="pl-k">+</span> batch_size] <span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-c1">0</span>, <span class="pl-c1">len</span>(left), batch_size)]</pre></div>
+<p>Merging left and right datasets and convert them into <strong>numpy</strong> arrays. Create the target array <code>y</code> using as convention <em>0</em> for batches corresponding tho right hand and <em>1</em> for left hand. The axis of the <code>X</code> array correspond to: (batch index, mouse position in time, mouse coordinate index).</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> numpy <span class="pl-k">as</span> np
+X <span class="pl-k">=</span> np.array(batch_right <span class="pl-k">+</span> batch_left)
+y <span class="pl-k">=</span> np.array([<span class="pl-c1">0</span>]<span class="pl-k">*</span><span class="pl-c1">len</span>(batch_right) <span class="pl-k">+</span> [<span class="pl-c1">1</span>]<span class="pl-k">*</span><span class="pl-c1">len</span>(batch_left))
+
+<span class="pl-c1">print</span>(<span class="pl-s">f</span><span class="pl-pds">'</span><span class="pl-s">X shape: </span><span class="pl-c1">{</span>X.shape<span class="pl-c1">}</span><span class="pl-cce">\n</span><span class="pl-s">y shape: </span><span class="pl-c1">{</span>y.shape<span class="pl-c1">}</span><span class="pl-pds">'</span>)</pre></div>
+<pre lang="text"><code>X shape: (600, 200, 2)
+y shape: (600,)
+</code></pre>
+<h3>
+<a id="user-content-definition-of-the-training-set---01" class="anchor" href="#definition-of-the-training-set---01" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Definition of the training set - 01</h3>
+<p><strong>Training</strong>, <strong>dev</strong> and <strong>test</strong> sets are split in a 70%-15%-15% proportion. The training set is used for training the network, the dev set as a benchmark to optimize the ML algorithm and finally the test set to measure the accuracy of the model. It is important to keep dev and test set separated to avoid the over-fitting of the hyper-parameters of the model on the test set.</p>
+<hr>
+<p>The splitting between train/dev/test is achieved using the <strong>sklearn</strong> library.</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> sklearn.model_selection <span class="pl-k">import</span> train_test_split
+
+X_train, X_test, y_train, y_test <span class="pl-k">=</span> train_test_split(X, y, <span class="pl-v">test_size</span><span class="pl-k">=</span><span class="pl-c1">0.30</span>, <span class="pl-v">random_state</span><span class="pl-k">=</span><span class="pl-c1">1</span>)
+X_dev, X_test, y_dev, y_test <span class="pl-k">=</span> train_test_split(X_train, y_train, <span class="pl-v">test_size</span><span class="pl-k">=</span><span class="pl-c1">0.5</span>, <span class="pl-v">random_state</span><span class="pl-k">=</span><span class="pl-c1">1</span>)</pre></div>
+<h3>
+<a id="user-content-algorithm-selection" class="anchor" href="#algorithm-selection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Algorithm selection</h3>
+<p>As a starting point algorithm we opted for a <strong>RNN</strong> (recurrent neural network). In particular, inspired from this <a href="https://www.analyticsvidhya.com/blog/2019/01/introduction-time-series-classification/#" rel="nofollow">blog post</a>, we used a <strong>LSTM</strong> (Long short-term memory) architecture.</p>
+<hr>
+<p>We implemented the neural network in <strong>keras</strong> using <strong>TensorFlow backend</strong>:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> tensorflow <span class="pl-k">as</span> tf
+<span class="pl-k">from</span> keras.models <span class="pl-k">import</span> Sequential
+<span class="pl-k">from</span> keras.layers <span class="pl-k">import</span> Dense
+<span class="pl-k">from</span> keras.layers <span class="pl-k">import</span> <span class="pl-c1">LSTM</span>
+
+model <span class="pl-k">=</span> Sequential()
+model.add(LSTM(<span class="pl-c1">256</span>, <span class="pl-v">input_shape</span><span class="pl-k">=</span>(batch_size, <span class="pl-c1">2</span>)))
+model.add(Dense(<span class="pl-c1">1</span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>sigmoid<span class="pl-pds">'</span></span>))
+
+model.summary()</pre></div>
+<pre lang="text"><code>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+lstm_1 (LSTM)                (None, 256)               265216    
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 257       
+=================================================================
+Total params: 265,473
+Trainable params: 265,473
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<p>The training is performed using <strong>stochastic gradient descent</strong>, in particular using the <strong>Adam</strong> algorithm (short for Adaptive Moment Estimation). We used the <em>accuracy</em> metric and we trained the data for 200 epochs. We save the best model as <em>best_model.pkl</em>. It takes about 8 minutes to train the model using a regular laptop.</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> keras.optimizers <span class="pl-k">import</span> Adam
+<span class="pl-k">from</span> keras.callbacks <span class="pl-k">import</span> ModelCheckpoint
+
+adam <span class="pl-k">=</span> Adam(<span class="pl-v">lr</span><span class="pl-k">=</span><span class="pl-c1">0.001</span>)
+chk <span class="pl-k">=</span> ModelCheckpoint(<span class="pl-s"><span class="pl-pds">'</span>best_model.pkl<span class="pl-pds">'</span></span>, <span class="pl-v">monitor</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>acc<span class="pl-pds">'</span></span>, <span class="pl-v">save_best_only</span><span class="pl-k">=</span><span class="pl-c1">True</span>, <span class="pl-v">mode</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>max<span class="pl-pds">'</span></span>, <span class="pl-v">verbose</span><span class="pl-k">=</span><span class="pl-c1">0</span>)
+model.compile(<span class="pl-v">loss</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>binary_crossentropy<span class="pl-pds">'</span></span>, <span class="pl-v">optimizer</span><span class="pl-k">=</span>adam, <span class="pl-v">metrics</span><span class="pl-k">=</span>[<span class="pl-s"><span class="pl-pds">'</span>accuracy<span class="pl-pds">'</span></span>])
+history <span class="pl-k">=</span> model.fit(X_train, y_train, <span class="pl-v">epochs</span><span class="pl-k">=</span><span class="pl-c1">200</span>, <span class="pl-v">batch_size</span><span class="pl-k">=</span><span class="pl-c1">64</span>, <span class="pl-v">callbacks</span><span class="pl-k">=</span>[chk], <span class="pl-v">validation_data</span><span class="pl-k">=</span>(X_dev, y_dev))</pre></div>
+<p>The learning process during the gradient descent can be visualized by monitoring the accuracy of the model and the loss function, computed both on the training set and on the dev set.
+<a href="///C://Users/aamico/Desktop/jupyter/time_series/mouse/plots/model_01.png" target="_blank" rel="noopener noreferrer"><img src="///C://Users/aamico/Desktop/jupyter/time_series/mouse/plots/model_01.png" alt="Model 01" style="max-width:100%;"></a>
+The accuracy describe the ratio between successful and total guesses. The loss-function correspond to the <strong>binary cross-entropy</strong>, which is given by:</p>
+<pre lang="math"><code>SE = \frac{\sigma}{\sqrt{n}}
+</code></pre>
+<h3>
+<a id="user-content-evaluation-of-the-model" class="anchor" href="#evaluation-of-the-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Evaluation of the model</h3>
+<p>We
+from keras.models import load_model</p>
+</article></body></html>
