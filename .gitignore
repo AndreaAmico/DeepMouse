@@ -28,6 +28,7 @@ __pycache__
 .#*
 .coverage
 .pytest_cache
+.pkl
 src
 
 *.swp

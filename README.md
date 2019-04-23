@@ -8,6 +8,11 @@ The goal of this toy algorithm is to identify if the laptop track-pad is used ei
 
 It is an iterative process which periodically ends with the evaluation of the model using the **dev** (development) dataset. The iteration continues until the accuracy obtained on the dev set reaches our goal. Only at this point the model is tested on the **test** dataset.
 
+## Iterations index
+- [First model implementation](#identification-of-required-data---01)
+- [Data pre-processing 02](#data-pre-processing---02)
+- [Algorithm optimizer 03](#algorithm-selection---03)
+
 
 ### Identification of required data - 01
 In order to train a model to recognize which hand is moving the mouse, we opted for a supervised learning approach and we therefore need labeled data to for the training. The structure of the dataset is a *.csv* file with two columns indicating the *x* and *y* absolute coordinate of the mouse cursor on the screen. The position is recorded every \~10ms. In order to create the training set, we recorded the mouse position for about 10 minutes, first by using the right hand (while reading a technical blog post), then doing the same task by using the left hand. The total amount of samples is 120k (60k right, 60k left).
@@ -192,10 +197,24 @@ Here is how it looks the movement amplitude distribution after the cleaning and 
 
 ![Relative movement distribution corrected](./plots/relative_movement_hist_corrected.png)
 
-### Evaluation of the model - 02
+##### Evaluation of the model - 02
 
 Lets look at the confusion matrix again:
 
 ![Confusion matrix 02](./plots/conf_matrix_02.png)
 
-While the overall accuracy is similar to the *01-iteration*, the pre-processing of the dataset made the right and left hand prediction success rate move even, which is a clear improvement.
+The overall accuracy increased a lot from the *01-iteration*.
+
+### Algorithm selection - 03
+We now want to test different optimizers for the training. Up to now we used Adam with a learning rate of `lr = 0.001` and standard beta parameters (`beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0`). Before changing the optimizer we want to explore different values for the learning rate. We tested learning rates in the list `[0.01, 0.001, 0.0001, 0.00001]`. For each lr we initialize the model three times (changing the random seed) and we averaged the results. The accuracy and the loss function are plotted below:
+
+![Model accuracy loss 03](./plots/model_03.png)
+
+Solid lines refers to results obtained on the dev set while shaded areas refers to results obtained on the training set. The smaller is the learning rate, the smoother is the evolution of the accuracy (and loss function). A learning rate of `0.0001` seems to be the best compromise between achieving good results and having a short training time.
+
+##### Evaluation of the model - 03
+To evaluate the model at this point, we used the best learning rate (`lr = 0.001`), the best random seed and we trained the network for 300 epochs instead of 200. The confusion matrix of the dev set is the following:
+
+![Confusion matrix 02](./plots/conf_matrix_03.png)
+
+The overall accuracy increased from the *02-iteration*, moreover, the right and left hand prediction success rate are now more balanced, which is a second clear improvement.
