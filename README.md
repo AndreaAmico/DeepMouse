@@ -14,7 +14,7 @@ It is an iterative process which periodically ends with the evaluation of the mo
 - [Algorithm optimizer 03](#algorithm-selection---03)
 
 
-### Identification of required data - 01
+### Identification of required data - 01[🡅](#iterations-index)
 In order to train a model to recognize which hand is moving the mouse, we opted for a supervised learning approach and we therefore need labeled data to for the training. The structure of the dataset is a *.csv* file with two columns indicating the *x* and *y* absolute coordinate of the mouse cursor on the screen. The position is recorded every \~10ms. In order to create the training set, we recorded the mouse position for about 10 minutes, first by using the right hand (while reading a technical blog post), then doing the same task by using the left hand. The total amount of samples is 120k (60k right, 60k left).
 The data are acquired using the win32gui library and stored in a *.txt* file via a python script:
 ```python
@@ -32,7 +32,8 @@ As shown in the plot below the real time delay between subsequent acquisitions i
 
 A possible improvement might be achieved by a pure c acquisition program, which includes a time delay check every loop. For the moment, since we do not know the impact of a more stable acquisition for the model accuracy, we postpone the problem for later iterations.
 
-### Data pre-processing - 01
+### Data pre-processing - 01[🡅](#iterations-index)
+[Back to index](#iterations-index)
 The full 20 minutes dataset is split in batches of 200 points each, corresponding to 2 seconds of mouse position acquisitions. Right and left hand data are merged together in a single dataset. For the moment we use raw data from the input device, being the absolute coordinate along the horizontal and vertical direction of the screen.
 
 ---------------
@@ -67,7 +68,8 @@ For the moment the decision of creating batches of 200 data-points is arbitrary 
 ![Batch data example](./plots/batch_example.png)
 
 
-### Definition of the training set - 01
+### Definition of the training set - 01[🡅](#iterations-index)
+[Back to index](#iterations-index)
 **Training**, **dev** and **test** sets are split in a 70%-15%-15% proportion. The training set is used for training the network, the dev set as a benchmark to optimize the ML algorithm and finally the test set to measure the accuracy of the model. It is important to keep dev and test set separated to avoid the over-fitting of the hyper-parameters of the model on the test set. 
 
 ------------
@@ -79,7 +81,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random
 X_dev, X_test, y_dev, y_test = train_test_split(X_train, y_train, test_size=0.5, random_state=1)
 ```
 
-### Algorithm selection - 01
+### Algorithm selection - 01[🡅](#iterations-index)
 As a starting point algorithm we opted for a **RNN** (recurrent neural network). In particular, inspired from this [blog post](https://www.analyticsvidhya.com/blog/2019/01/introduction-time-series-classification/#), we used a **LSTM** (Long short-term memory) architecture.
 
 -------------------
@@ -136,7 +138,7 @@ where `y` is the target correct binary label (0 for right hand, 1 for left hand)
 
 From the plot we can observe an accuracy increase both for the training set and the dev set, but the slope is very slow after about 75 epochs. The loss function decreases as well and it seems not to be saturated after 200 epochs of training. Maybe more training time might be beneficial. The best accuracy achieved on the dev set is of about 76\% which is a promising starting point.
 
-### Evaluation of the model - 01
+### Evaluation of the model - 01[🡅](#iterations-index)
 A simple validation of the model can be achieved using the **confusion matrix**, which reports the measure of the correct and non-correct labels computed by the model on the dev set.
 
 ![Confusion matrix 01](./plots/conf_matrix_01.png)
@@ -166,7 +168,7 @@ for index in range(1, max(2, int(time_in_sec/2))):
         f'Right probability = {(1 - left_guesses/index) * 100:.1f}%', end='')
  ```
 
-### Data pre-processing - 02
+### Data pre-processing - 02[🡅](#iterations-index)
 An almost useful and safe pre-processing technique on data is their **normalization**. For the moment we used absolute screen coordinate but a very easy improvement is to normalize them by using the screen hight and width. An other option is to convert the absolute position of the mouse to the movement performed in 10ms. This might be useful because it simplifies the problem introducing a translational invariance along the coordinate, which looks to be a good symmetry to exploit. We start from this second option:
 ```python 
 X_diff = X[:,:-1,:].copy()
@@ -197,7 +199,7 @@ Here is how it looks the movement amplitude distribution after the cleaning and 
 
 ![Relative movement distribution corrected](./plots/relative_movement_hist_corrected.png)
 
-##### Evaluation of the model - 02
+##### Evaluation of the model - 02[🡅](#iterations-index)
 
 Lets look at the confusion matrix again:
 
@@ -205,14 +207,14 @@ Lets look at the confusion matrix again:
 
 The overall accuracy increased a lot from the *01-iteration*.
 
-### Algorithm selection - 03
+### Algorithm selection - 03[🡅](#iterations-index)
 We now want to test different optimizers for the training. Up to now we used Adam with a learning rate of `lr = 0.001` and standard beta parameters (`beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0`). Before changing the optimizer we want to explore different values for the learning rate. We tested learning rates in the list `[0.01, 0.001, 0.0001, 0.00001]`. For each lr we initialize the model three times (changing the random seed) and we averaged the results. The accuracy and the loss function are plotted below:
 
 ![Model accuracy loss 03](./plots/model_03.png)
 
 Solid lines refers to results obtained on the dev set while shaded areas refers to results obtained on the training set. The smaller is the learning rate, the smoother is the evolution of the accuracy (and loss function). A learning rate of `0.0001` seems to be the best compromise between achieving good results and having a short training time.
 
-##### Evaluation of the model - 03
+##### Evaluation of the model - 03[🡅](#iterations-index)
 To evaluate the model at this point, we used the best learning rate (`lr = 0.001`), the best random seed and we trained the network for 300 epochs instead of 200. The confusion matrix of the dev set is the following:
 
 ![Confusion matrix 02](./plots/conf_matrix_03.png)
