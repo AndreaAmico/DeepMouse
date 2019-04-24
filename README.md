@@ -78,7 +78,7 @@ The splitting between train/dev/test is achieved using the **sklearn** library.
 from sklearn.model_selection import train_test_split
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=1)
-X_dev, X_test, y_dev, y_test = train_test_split(X_train, y_train, test_size=0.5, random_state=1)
+X_dev, X_test, y_dev, y_test = train_test_split(X_est, y_est, test_size=0.5, random_state=1)
 ```
 
 ### Algorithm selection - 01[🡅](#iterations-index)
@@ -136,14 +136,16 @@ loss = -(y log(p) + (1-y) log(1-p))
 ```
 where `y` is the target correct binary label (0 for right hand, 1 for left hand) and `p` is the predicted probability for a given data batch to be a left hand batch. When the cross-entropy is *1* the model is useless and it is equivalent to a random guess. When it is *0* the model perfectly predict the target given a single data batch.
 
-From the plot we can observe an accuracy increase both for the training set and the dev set, but the slope is very slow after about 75 epochs. The loss function decreases as well and it seems not to be saturated after 200 epochs of training. Maybe more training time might be beneficial. The best accuracy achieved on the dev set is of about 76\% which is a promising starting point.
+...TODO...
+
+<!-- From the plot we can observe an accuracy increase both for the training set and the dev set, but the slope is very slow after about 75 epochs. The loss function decreases as well and it seems not to be saturated after 200 epochs of training. Maybe more training time might be beneficial. The best accuracy achieved on the dev set is of about 76\% which is a promising starting point. -->
 
 ### Evaluation of the model - 01[🡅](#iterations-index)
 A simple validation of the model can be achieved using the **confusion matrix**, which reports the measure of the correct and non-correct labels computed by the model on the dev set.
 
 ![Confusion matrix 01](./plots/conf_matrix_01.png)
 
-While the model seems good at classifying the right hand, it does quite purely concerning the left hand. We can also test the model live, loading it and using the script:
+The model produces very poor result but informations seems to be present in the data. We can also test the model live, loading it and using the script:
 ```python
 from keras.models import load_model
 import win32gui, time
@@ -207,7 +209,7 @@ Lets look at the confusion matrix again:
 
 The overall accuracy increased a lot from the *01-iteration*.
 
-### Algorithm selection - 03[🡅](#iterations-index)
+<!-- ### Algorithm selection - 03[🡅](#iterations-index)
 We now want to test different optimizers for the training. Up to now we used Adam with a learning rate of `lr = 0.001` and standard beta parameters (`beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0`). Before changing the optimizer we want to explore different values for the learning rate. We tested learning rates in the list `[0.01, 0.001, 0.0001, 0.00001]`. For each lr we initialize the model three times (changing the random seed) and we averaged the results. The accuracy and the loss function are plotted below:
 
 ![Model accuracy loss 03](./plots/model_03.png)
@@ -219,4 +221,4 @@ To evaluate the model at this point, we used the best learning rate (`lr = 0.001
 
 ![Confusion matrix 02](./plots/conf_matrix_03.png)
 
-The overall accuracy increased from the *02-iteration*, moreover, the right and left hand prediction success rate are now more balanced, which is a second clear improvement.
+The overall accuracy increased from the *02-iteration*, moreover, the right and left hand prediction success rate are now more balanced, which is a second clear improvement. -->
