@@ -12,6 +12,7 @@ It is an iterative process which periodically ends with the evaluation of the mo
 - [First model implementation](#identification-of-required-data---01)
 - [Data pre-processing 02](#data-pre-processing---02)
 - [Algorithm optimizer 03](#algorithm-selection---03)
+- [Neural Network structure 04](#algorithm-selection---04)
 
 
 ### Identification of required data - 01[🡅](#iterations-index)
@@ -209,16 +210,23 @@ Lets look at the confusion matrix again:
 
 The overall accuracy increased a lot from the *01-iteration*.
 
-<!-- ### Algorithm selection - 03[🡅](#iterations-index)
-We now want to test different optimizers for the training. Up to now we used Adam with a learning rate of `lr = 0.001` and standard beta parameters (`beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0`). Before changing the optimizer we want to explore different values for the learning rate. We tested learning rates in the list `[0.01, 0.001, 0.0001, 0.00001]`. For each lr we initialize the model three times (changing the random seed) and we averaged the results. The accuracy and the loss function are plotted below:
+### Algorithm selection - 03[🡅](#iterations-index)
+We now want to test different optimizers for the training. Up to now we used Adam with a learning rate of `lr = 0.001` and standard beta parameters (`beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0`). Before changing the optimizer we want to explore different values for the learning rate. We tested learning rates in the list `[0.01, 0.001, 0.0001, 0.00001]`. For each lr we initialize the model five times (changing the random seed) and we averaged the results. The accuracy and the loss function are plotted below:
 
-![Model accuracy loss 03](./plots/model_03.png)
+![Model accuracy loss 03](./plots/model_03_comp.png)
 
-Solid lines refers to results obtained on the dev set while shaded areas refers to results obtained on the training set. The smaller is the learning rate, the smoother is the evolution of the accuracy (and loss function). A learning rate of `0.0001` seems to be the best compromise between achieving good results and having a short training time.
+The smaller is the learning rate, the smoother is the evolution of the accuracy (and loss function). A learning rate of `0.0001` seems to be the best compromise between achieving good results and having a short training time.
 
 ##### Evaluation of the model - 03[🡅](#iterations-index)
-To evaluate the model at this point, we used the best learning rate (`lr = 0.001`), the best random seed and we trained the network for 300 epochs instead of 200. The confusion matrix of the dev set is the following:
+To evaluate the model at this point, we used the best learning rate (`lr = 0.0001`) and we trained the network for 300 epochs instead of 200.
 
-![Confusion matrix 02](./plots/conf_matrix_03.png)
+![Confusion matrix 02](./plots/model_03.png)
 
-The overall accuracy increased from the *02-iteration*, moreover, the right and left hand prediction success rate are now more balanced, which is a second clear improvement. -->
+Here we can recognise the tyical pattern of overfitting: the accuracy on the dev set increases untill we hit 100 epochs, then it start to decrease again. The same pattern, altought reversed, appears in the loss function. With this model and dataset we reached an accuracy of of about 75%. In order to try to improve this result we can try different neural network models.
+
+
+### Algorithm selection - 04[🡅](#iterations-index)
+
+
+
+
