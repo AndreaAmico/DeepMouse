@@ -25,6 +25,7 @@ __pycache__
 .tox
 .DS_Store
 \#*#
+models/*
 .#*
 .coverage
 .pytest_cache
