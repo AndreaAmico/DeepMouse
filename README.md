@@ -225,7 +225,7 @@ To evaluate the model at this point, we used the best learning rate (`lr = 0.000
 Here we can recognise the tyical pattern of overfitting: the accuracy on the dev set increases untill we hit 100 epochs, then it start to decrease again. The same pattern, altought reversed, appears in the loss function. With this model and dataset we reached an accuracy of of about 75%. In order to try to improve this result we can try different neural network models.
 
 ### Algorithm selection - 04[🡅](#iterations-index)
-We now explore the performance differences for different batch sizes. We tested values in `[13, 32, 64, 128]` and, for each value, we run the model 9 times using a cross-validation method. The result is showed in the figure below
+We now explore the performance differences for different batch sizes. We tested values in `[13, 32, 64]` and, for each value, we run the model 9 times using a cross-validation method. The result is showed in the figure below
 :
 ![Model accuracy loss 04](./plots/model_04_comp.png)
 
