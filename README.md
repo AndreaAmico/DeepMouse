@@ -13,6 +13,8 @@ It is an iterative process which periodically ends with the evaluation of the mo
 - [Data pre-processing 02](#data-pre-processing---02)
 - [Algorithm optimizer 03](#algorithm-selection---03)
 - [Neural Network structure 04](#algorithm-selection---04)
+- [Testing SVM 05](#algorithm-selection---05)
+- [LSTM size and learning rate with Bayesopt 06](#lstm-size-and-learning-rate-with-Bayesopt---06)
 
 
 ### Identification of required data - 01[🡅](#iterations-index)
@@ -229,6 +231,18 @@ We now explore the performance differences for different batch sizes. We tested 
 :
 ![Model accuracy loss 04](./plots/model_04_comp.png)
 
+The differences are minimal. We chose a batch size of 32 since it geves better results faster. 
+
+### Algorithm selection - 05[🡅](#iterations-index)
+We now test a completely different strategy: using a support vertor machine to classify our data. We used a bayesian optimization with cross validation approach to find the optimal `gamma` and `C` parameters, but the best accuracy obtained is 62%, which is quite low if compared to the LSTM performance. We therefore go back to the recurrent NN strategy.
+
+
+### LSTM size and learning rate with Bayesopt - 06[🡅](#iterations-index)
+We use a Bayesian optimization approach to find the optimal number of neurons in the LSTM network and the optimal learning rate. We select the validation accuracy as the target variable to optimize. On the left we see the performance estimation for different number of LSTM neurons, on the x axis, and for different learning rates, on the y axis (obtained with a gaussian kernel). On the right panel we plot the uncertainty of the gaussian model. Look at [this blog post](https://www.andreaamico.eu/machine_learning/2019/05/08/bayesian_opt.html) to have a short introduction on how to code Bayesian optimization. 
+
+![bayesian optimization](./plots/bayesian_opt.png)
+
+The optimal parameters seems to sit between 150 and 250 LSTM neurons, and a learning rate of about 1.5e-4.
 
 
 
