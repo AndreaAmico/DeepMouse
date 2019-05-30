@@ -1,9 +1,16 @@
-class Pspace(object):
+import numpy as np
+import matplotlib.pyplot as plt
+import time
+
+
+class Parameter_space(object):
     '''Scale points for bayes_opt library.
     '''
     def __init__(self, bounds={}):
         ''' Set the hyper-rectangle boundary for Bayes optimization.
         
+        Using: (bayesopt, get_random_next, register_point, get_bayes_next)
+
         Set up the boundaries of the parameter space, defining both the min-max limits and the 
         scale: linear, log or descrete.
         
@@ -26,6 +33,10 @@ class Pspace(object):
                 provided as base 10 exponents: (e.g. 4 means 1e4)
         
         '''
+
+        self.optimizer = None
+        self.utility = None
+
         self.bounds = bounds
         for k, v in self.bounds.items():
             assert (v[2] in ('lin', 'linear', 'int', 'integer', 'descrete', 'log', 'logarithmic')),\
@@ -88,7 +99,7 @@ class Pspace(object):
             if v[2] in ('lin', 'linear'):
                 new_point[k] = self._remap(point[k], 0, 1, v[0], v[1])
             elif v[2] in ('int', 'integer', 'descrete'):
-                new_point[k] = round(self._remap(point[k], 0, 1, v[0], v[1]))
+                new_point[k] = int(round(self._remap(point[k], 0, 1, v[0], v[1])))
             elif v[2] in ('log', 'logarithmic'):
                 
                 new_point[k] = 10**self._remap(point[k], 0, 1, v[0], v[1])
@@ -127,17 +138,23 @@ class Pspace(object):
             
         return new_arr
     
-    def optimizer_to_lists(self, optimizer, key_order):
-        new_arr = np.ones([len(optimizer.res), len(key_order)+1])       
-        for index, point in enumerate(optimizer.res):
+    def optimizer_to_lists(self, key_order=None):
+
+        key_order = key_order if not key_order else list(self.bounds.keys())[:2]
+
+        new_arr = np.ones([len(self.optimizer.res), len(key_order)+1])       
+        for index, point in enumerate(self.optimizer.res):
             original_point = self.original(point['params'])            
             for param_index, param_name in enumerate(key_order):
                 new_arr[index, param_index] = original_point[param_name]
             new_arr[index, -1] = point['target']
         return [new_arr[:,i] for i in range(new_arr.shape[1])]
     
-    def optimizer_to_grid(self, optimizer, key_order):
-        _ = optimizer.suggest(utility)
+    def optimizer_to_grid(self, key_order=None):
+        
+        key_order = key_order if not key_order else list(self.bounds.keys())[:2]
+            
+        _ = self.optimizer.suggest(self.utility)
         
         x_span = np.linspace(0,1,50)
         y_span = np.linspace(0,1,50)
@@ -145,9 +162,9 @@ class Pspace(object):
         xy_meshgrid = np.meshgrid(x_span, y_span, indexing='xy')
         xy_shape = xy_meshgrid[0].shape
         xy = np.column_stack([np.ravel(x) for x in xy_meshgrid])
-        mean, sigma = optimizer._gp.predict(xy, return_std=True)
-        new_key_order = [optimizer.space.keys.index(key) for key in key_order]
-        xy_orig = ps.array_to_original(xy, optimizer.space.keys)
+        mean, sigma = self.optimizer._gp.predict(xy, return_std=True)
+        new_key_order = [self.optimizer.space.keys.index(key) for key in key_order]
+        xy_orig = self.array_to_original(xy, self.optimizer.space.keys)
         x_grid = xy_orig[:, new_key_order[0]].reshape(xy_shape)
         y_grid = xy_orig[:, new_key_order[1]].reshape(xy_shape)
         mean = mean.reshape(xy_shape)
@@ -155,22 +172,24 @@ class Pspace(object):
         
         return x_grid, y_grid, mean, sigma
     
-    def plot_optimizer(self, optimizer, key_order, fig_axs=None):
+    def plot_optimizer(self, key_order=None, fig_axs=None):
         
         fig, axs = fig_ax if fig_axs else plt.subplots(1, 2, figsize=(10,5))
         
-        X_PARAM = key_order[0]
-        Y_PARAM = key_order[1]
+        if key_order:
+            X_PARAM, Y_PARAM = key_order[:2]
+        else:
+            X_PARAM, Y_PARAM = list(self.bounds.keys())[:2]
 
-        x_grid, y_grid, mean, sigma = ps.optimizer_to_grid(optimizer, key_order=[X_PARAM, Y_PARAM])
-        X_points, Y_points, targets = ps.optimizer_to_lists(optimizer, key_order=[X_PARAM, Y_PARAM])
+        x_grid, y_grid, mean, sigma = self.optimizer_to_grid(key_order=[X_PARAM, Y_PARAM])
+        X_points, Y_points, targets = self.optimizer_to_lists(key_order=[X_PARAM, Y_PARAM])
 
         axs[0].contourf(x_grid, y_grid, mean, 50, zorder=1)
         axs[0].set_title('Mean')
         axs[1].contourf(x_grid, y_grid, sigma, 50, zorder=1)
         axs[1].set_title('Sigma')
 
-        x_max, y_max =  optimizer.max['params'][X_PARAM], optimizer.max['params'][Y_PARAM]
+        x_max, y_max =  self.optimizer.max['params'][X_PARAM], self.optimizer.max['params'][Y_PARAM]
         
         for ax in axs:
             ax.scatter(X_points, Y_points, c=targets, cmap='magma', zorder=4, marker='d')
@@ -179,11 +198,46 @@ class Pspace(object):
             ax.set_xlim(min(X_points), max(X_points))
             ax.set_ylim(min(Y_points), max(Y_points))
                        
-            ax.set_xscale(ps.get_plot_scale(X_PARAM))
-            ax.set_yscale(ps.get_plot_scale(Y_PARAM))
+            ax.set_xscale(self.get_plot_scale(X_PARAM))
+            ax.set_yscale(self.get_plot_scale(Y_PARAM))
 
             ax.set_xlabel(f'{X_PARAM} (max: {x_max:.2e})')
             ax.set_ylabel(f'{Y_PARAM} (max: {y_max:.2e})')
+
+    def bayesopt(self, test_function, kind='ucb', kappa=1., xi=1., verbose=0, random_state=42):
+        from bayes_opt import BayesianOptimization
+        from bayes_opt import UtilityFunction
+
+        self.optimizer = BayesianOptimization(
+                f=test_function,
+                pbounds=self.get_01(),
+                verbose=verbose,
+                random_state=random_state)
+
+        self.utility = UtilityFunction(kind=kind, kappa=kappa, xi=xi)
+
+    def get_bayes_next(self):
+        assert(self.optimizer != None), 'Initialize first the optimization function using bayesopt()'
+        next_point_to_probe = self.optimizer.suggest(self.utility)
+        return self.original(next_point_to_probe)
+
+    def get_random_next(self, time_seed=False):
+
+        if time_seed:
+            random_state = np.random.get_state()
+            np.random.seed(int(time.time()*1000)%2**31)
+
+        next_point_to_probe = {}
+        for k, v in self.bounds.items():
+            next_point_to_probe[k] = np.random.random()
+
+        if time_seed: np.random.set_state(random_state)
+        return self.original(next_point_to_probe)
+
+    def register_point(self, point, target):
+        assert(self.optimizer != None), 'Initialize first the optimization function using bayesopt()'
+        normalized_point =  self.scaled(point)
+        self.optimizer.register(params=normalized_point, target=target)
 
 
 # ps = Parameter_space({'a': (-2, 2, 'lin'),
