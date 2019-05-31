@@ -9,12 +9,15 @@ The goal of this toy algorithm is to identify if the laptop track-pad is used ei
 It is an iterative process which periodically ends with the evaluation of the model using the **dev** (development) dataset. The iteration continues until the accuracy obtained on the dev set reaches our goal. Only at this point the model is tested on the **test** dataset.
 
 ## Iterations index
-- [First model implementation](#identification-of-required-data---01)
+- [First model implementation 01](#identification-of-required-data---01)
 - [Data pre-processing 02](#data-pre-processing---02)
 - [Algorithm optimizer 03](#algorithm-selection---03)
 - [Neural Network structure 04](#algorithm-selection---04)
 - [Testing SVM 05](#algorithm-selection---05)
 - [LSTM size and learning rate with Bayesopt 06](#lstm-size-and-learning-rate-with-Bayesopt---06)
+- [Introducing dropout 07](#introducing-dropout---07)
+- [Checking training set size 08](#checking-training-set-size---08)
+
 
 
 ### Identification of required data - 01[🡅](#iterations-index)
@@ -139,9 +142,6 @@ loss = -(y log(p) + (1-y) log(1-p))
 ```
 where `y` is the target correct binary label (0 for right hand, 1 for left hand) and `p` is the predicted probability for a given data batch to be a left hand batch. When the cross-entropy is *1* the model is useless and it is equivalent to a random guess. When it is *0* the model perfectly predict the target given a single data batch.
 
-...TODO...
-
-<!-- From the plot we can observe an accuracy increase both for the training set and the dev set, but the slope is very slow after about 75 epochs. The loss function decreases as well and it seems not to be saturated after 200 epochs of training. Maybe more training time might be beneficial. The best accuracy achieved on the dev set is of about 76\% which is a promising starting point. -->
 
 ### Evaluation of the model - 01[🡅](#iterations-index)
 A simple validation of the model can be achieved using the **confusion matrix**, which reports the measure of the correct and non-correct labels computed by the model on the dev set.
@@ -245,4 +245,16 @@ We use a Bayesian optimization approach to find the optimal number of neurons in
 The optimal parameters seems to sit between 150 and 250 LSTM neurons, and a learning rate of about 1.5e-4.
 
 
+### Introducing dropout - 07[🡅](#iterations-index)
 
+
+
+
+
+
+### Checking training set size - 08[🡅](#iterations-index)
+In order to check if the size of the training dataset is limiting the final accuracy we study the validation accuracy by artificially liniting the training set size.
+
+![training size](./plots/training_size.png)
+
+Up to 250 batches of training data the model is completely unusable: the efficiency is as good as a random guess. From 250 up to 430 the validation accuracy increases almost linearly and does not seem to saturate. This suggests that we are strongly limited by the size of our training dataset. acquiring more data seems to be a very promising path to improve our accuracy.
