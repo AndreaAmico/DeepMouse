@@ -1,3 +1,8 @@
 Fri May 31 09:24:50 2019  -  starting {'LSTM_size': 268, 'dropout': 0.031493523310551004}
 Fri May 31 10:17:08 2019  -  finished {'LSTM_size': 268, 'dropout': 0.031493523310551004}
 Fri May 31 10:17:08 2019  -  starting {'LSTM_size': 159, 'dropout': 0.1331537569612165}
+Fri May 31 10:55:03 2019  -  finished {'LSTM_size': 159, 'dropout': 0.1331537569612165}
+Fri May 31 10:55:03 2019  -  starting {'LSTM_size': 158, 'dropout': 0.09009381785700887}
+Fri May 31 14:13:30 2019  -  starting {'LSTM_size': 267, 'dropout': 0.15183611922415335}
+Fri May 31 15:04:01 2019  -  finished {'LSTM_size': 267, 'dropout': 0.15183611922415335}
+Fri May 31 15:04:01 2019  -  starting {'LSTM_size': 191, 'dropout': 0.23387354485692247}
