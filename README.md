@@ -17,9 +17,11 @@ It is an iterative process that periodically ends with the evaluation of the mod
 - [LSTM size and learning rate with Bayesopt 06](#lstm-size-and-learning-rate-with-Bayesopt---06)
 - [Introducing dropout 07](#introducing-dropout---07)
 - [Checking training set size 08](#checking-training-set-size---08)
-- [New, bigger, dataset - 09](#New,-bigger,-dataset---09)
+- [New, bigger, dataset - 09](#New-bigger-dataset---09)
 - [GRU instead of LSTM - 10](#gru-instead-of-lstm---10)
-- [GRU and regularization - 11](#gru-and-regularization---11)
+- [GRU and overfitting - 11](#gru-and-overfitting---11)
+- [GRU with mouse movement - 12](#gru-and-mouse-movement---12)
+
 
 
 
@@ -305,6 +307,8 @@ def create_model(grid):
     return model
 ```
 
+
+
 We start scanning the GRU size parameter, together with the number of convolutional layers:
 
 ![GRU vs conv layer](./plots/conv_layer_number_contourf.png)
@@ -322,6 +326,17 @@ It is also interesting to isolate the effect of the presence of convolutional la
 The presence of convolutional layers seems to increase the learning speed, moreover leads to cleaner results: the thickness of the shadow showing the variance of the signal decreases. For the future, we set the number of convolutional layers to be 3. 
 
 
-### GRU and regularization - 11[🡅](#iterations-index)
+### GRU and overfitting - 11[🡅](#iterations-index)
+Now the training accuracy is great, but the validation accuracy does not increase more than 70-75%. After around 75 epochs of training, the validation accuracy stops to increase. This is a symptom of overfitting. To try to fix this we changed the GRU unit size (to reduce the complexity of the model) and introduce two dropout steps: recurrent dropout within the GRU layer, and classic dropout in between the convolutional layers. As we can see in the plot below none of these techniques worked out, but actually, reduce the performance of the model.
+
+![model 11 overfit](./plots/model_11_overfit.png)
+
+
+### GRU with mouse movement - 12[🡅](#iterations-index)
+
+Since the bottleneck might still be the training size, we decide to try again our bigger dataset (the one obtained using mouse movements instead of touchpad ones)
+
+
+
 
 
