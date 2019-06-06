@@ -334,9 +334,10 @@ Now the training accuracy is great, but the validation accuracy does not increas
 
 ### GRU with mouse movement - 12[🡅](#iterations-index)
 
-Since the bottleneck might still be the training size, we decide to try again our bigger dataset (the one obtained using mouse movements instead of touchpad ones)
+Since the bottleneck might still be the training size, we decide to try again our bigger dataset (the one obtained using mouse movements instead of touchpad ones). We study again the accuracy as a function of the training size.
 
+![training size mouse](./plots/training_size_mouse.png)
 
-
+Similarly to the touchpad dataset the accuracy hits its maximum at around 500 batches of training. This time it is clear that having more training datapoints does not improve the performance of the model.
 
 
