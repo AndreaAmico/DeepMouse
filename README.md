@@ -20,12 +20,14 @@ It is an iterative process that periodically ends with the evaluation of the mod
 - [New, bigger, dataset - 09](#New-bigger-dataset---09)
 - [GRU instead of LSTM - 10](#gru-instead-of-lstm---10)
 - [GRU and overfitting - 11](#gru-and-overfitting---11)
-- [GRU with mouse movement - 12](#gru-and-mouse-movement---12)
+- [GRU with mouse movement - 12](#gru-with-mouse-movement---12)
+- [Training size and regularizers - 13](#training-size-and-regularizers---13)
 
 
 
 
-### Identification of required data - 01[🡅](#iterations-index)
+
+### Identification of required data - 01[△](#iterations-index)
 To train a model to recognize which hand is moving the mouse, we opted for a supervised learning approach and we, therefore, need labeled data for the training. The structure of the dataset is a *.csv* file with two columns indicating the *x* and *y* absolute coordinate of the mouse cursor on the screen. The position is recorded every \~10ms. To create the training set, we recorded the mouse position for about 10 minutes, first by using the right hand (while reading a technical blog post), then doing the same task by using the left hand. The total amount of samples is 120k (60k right, 60k left).
 The data are acquired using the win32gui library and stored in a *.txt* file via a python script:
 ```python
@@ -43,8 +45,7 @@ As shown in the plot below the real-time delay between subsequent acquisitions i
 
 A possible improvement might be achieved by a pure c acquisition program, which includes a time delay to check every loop. For the moment, since we do not know the impact of a more stable acquisition for the model accuracy, we postpone the problem for later iterations.
 
-### Data pre-processing - 01[🡅](#iterations-index)
-[Back to index](#iterations-index)
+### Data pre-processing - 01[△](#iterations-index)
 The full 20 minutes dataset is split into batches of 200 points each, corresponding to 2 seconds of mouse position acquisitions. Right, and left-hand data are merged in a single dataset. For the moment we use raw data from the input device, being the absolute coordinate along the horizontal and vertical direction of the screen.
 
 ---------------
@@ -79,8 +80,7 @@ For the moment the decision of creating batches of 200 data-points is arbitrary 
 ![Batch data example](./plots/batch_example.png)
 
 
-### Definition of the training set - 01[🡅](#iterations-index)
-[Back to index](#iterations-index)
+### Definition of the training set - 01[△](#iterations-index)
 **Training**, **dev** and **test** sets are split in a 70%-15%-15% proportion. The training set is used for training the network, the dev set as a benchmark to optimize the ML algorithm and finally the test set to measure the accuracy of the model. It is important to keep dev and test set separated to avoid the over-fitting of the hyper-parameters of the model on the test set. 
 
 ------------
@@ -92,7 +92,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random
 X_dev, X_test, y_dev, y_test = train_test_split(X_est, y_est, test_size=0.5, random_state=1)
 ```
 
-### Algorithm selection - 01[🡅](#iterations-index)
+### Algorithm selection - 01[△](#iterations-index)
 As a starting point algorithm we opted for a **RNN** (recurrent neural network). In particular, inspired from this [blog post](https://www.analyticsvidhya.com/blog/2019/01/introduction-time-series-classification/#), we used a **LSTM** (Long short-term memory) architecture.
 
 -------------------
@@ -148,7 +148,7 @@ loss = -(y log(p) + (1-y) log(1-p))
 where `y` is the target correct binary label (0 for the right hand, 1 for left hand) and `p` is the predicted probability for a given data batch to be a left-hand batch. When the cross-entropy is *1* the model is useless and it is equivalent to a random guess. When it is *0* the model perfectly predicts the target given a single data batch.
 
 
-### Evaluation of the model - 01[🡅](#iterations-index)
+### Evaluation of the model - 01[△](#iterations-index)
 A simple validation of the model can be achieved using the **confusion matrix**, which reports the measure of the correct and non-correct labels computed by the model on the dev set.
 
 ![Confusion matrix 01](./plots/conf_matrix_01.png)
@@ -178,7 +178,7 @@ for index in range(1, max(2, int(time_in_sec/2))):
         f'Right probability = {(1 - left_guesses/index) * 100:.1f}%', end='')
  ```
 
-### Data pre-processing - 02[🡅](#iterations-index)
+### Data pre-processing - 02[△](#iterations-index)
 An almost useful and safe pre-processing technique on data is their **normalization**. For the moment we used absolute screen coordinate but a very easy improvement is to normalize them by using the screen height and width. Another option is to convert the absolute position of the mouse to the movement performed in 10ms. This might be useful because it simplifies the problem introducing a translational invariance along the coordinate, which looks to be a good symmetry to exploit. We start from this second option:
 ```python 
 X_diff = X[:,:-1,:].copy()
@@ -209,7 +209,7 @@ Here is how it looks the movement amplitude distribution after the cleaning and 
 
 ![Relative movement distribution corrected](./plots/relative_movement_hist_corrected.png)
 
-##### Evaluation of the model - 02[🡅](#iterations-index)
+##### Evaluation of the model - 02[△](#iterations-index)
 
 Lets look at the confusion matrix again:
 
@@ -217,32 +217,32 @@ Lets look at the confusion matrix again:
 
 The overall accuracy increased a lot from the *01-iteration*.
 
-### Algorithm selection - 03[🡅](#iterations-index)
+### Algorithm selection - 03[△](#iterations-index)
 We now want to test different optimizers for the training. Up to now we used Adam with a learning rate of `lr = 0.001` and standard beta parameters (`beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0`). Before changing the optimizer we want to explore different values for the learning rate. We tested learning rates in the list `[0.01, 0.001, 0.0001, 0.00001]`. For each lr we initialize the model five times (changing the random seed) and we averaged the results. The accuracy and the loss function are plotted below:
 
 ![Model accuracy loss 03](./plots/model_03_comp.png)
 
 The smaller is the learning rate, the smoother is the evolution of the accuracy (and loss function). A learning rate of `0.0001` seems to be the best compromise between achieving good results and having a short training time.
 
-##### Evaluation of the model - 03[🡅](#iterations-index)
+##### Evaluation of the model - 03[index](#iterations-index)
 To evaluate the model at this point, we used the best learning rate (`lr = 0.0001`) and we trained the network for 300 epochs instead of 200.
 
 ![Confusion matrix 02](./plots/model_03.png)
 
 Here we can recognize the typical pattern of overfitting: the accuracy on the dev set increases until we hit 100 epochs, then it starts to decrease again. The same pattern, although reversed, appears in the loss function. With this model and dataset, we reached an accuracy of about 75%. To try to improve this result we can try different neural network models.
 
-### Algorithm selection - 04[🡅](#iterations-index)
+### Algorithm selection - 04[△](#iterations-index)
 We now explore the performance differences for different batch sizes. We tested values in `[13, 32, 64]` and, for each value, we run the model 9 times using a cross-validation method. The result is showed in the figure below
 :
 ![Model accuracy loss 04](./plots/model_04_comp.png)
 
 The differences are minimal. We chose a batch size of 32 since it gives better results faster. 
 
-### Algorithm selection - 05[🡅](#iterations-index)
+### Algorithm selection - 05[△](#iterations-index)
 We now test a completely different strategy: using a support vector machine to classify our data. We used a bayesian optimization with cross-validation approach to find the optimal `gamma` and `C` parameters, but the best accuracy obtained is 62%, which is quite low if compared to the LSTM performance. We, therefore, go back to the recurrent NN strategy.
 
 
-### LSTM size and learning rate with Bayesopt - 06[🡅](#iterations-index)
+### LSTM size and learning rate with Bayesopt - 06[△](#iterations-index)
 We use a Bayesian optimization approach to find the optimal number of neurons in the LSTM network and the optimal learning rate. We select the validation accuracy as the target variable to optimize. On the left, we see the performance estimation for a different number of LSTM neurons, on the x-axis, and for different learning rates, on the y-axis (obtained with a gaussian kernel). On the right panel, we plot the uncertainty of the gaussian model. Look at [this blog post](https://www.andreaamico.eu/machine_learning/2019/05/08/bayesian_opt.html) to have a short introduction on how to code Bayesian optimization. 
 
 ![bayesian optimization](./plots/bayesian_opt.png)
@@ -250,7 +250,7 @@ We use a Bayesian optimization approach to find the optimal number of neurons in
 The optimal parameters seem to sit between 150 and 250 LSTM neurons, and a learning rate of about 1.5e-4.
 
 
-### Introducing dropout - 07[🡅](#iterations-index)
+### Introducing dropout - 07[△](#iterations-index)
 We test if we can reduce the accuracy gap between training and validation by introducting dropout in the LSTM layer:
 ```python
 LSTM(grid['LSTM_size'][1], input_shape=grid['input_shape'][1],
@@ -265,17 +265,17 @@ We use a simple grid search to find the best dropout vs LSTM size.
 We do not detect significant improvements introduced by dropout. We confirm that an LSTM of at least 200 units to reach a validation accuracy higher than 70%. For the moment we will remove the dropout regularization from the model. 
 
 
-### Checking training set size - 08[🡅](#iterations-index)
+### Checking training set size - 08[△](#iterations-index)
 To check if the size of the training dataset is limiting the final accuracy we study the validation accuracy by artificially limiting the training set size.
 
 ![training size](./plots/training_size.png)
 
 Up to 250 batches of training data the model are completely unusable: the efficiency is as good as a random guess. From 250 up to 430 the validation accuracy increases almost linearly and does not seem to saturate. This suggests that we are strongly limited by the size of our training dataset. acquiring more data seems to be a very promising path to improve our accuracy.
 
-### New, bigger, dataset - 09[🡅](#iterations-index)
+### New, bigger, dataset - 09[△](#iterations-index)
 The previous section told us we need more training points. We constructed a new dataset obtained in a similar way but using a mouse instead of the touchpad. The movements are recorded while playing simple browser games like string.io. The new training size available is now of about 1800 different batches instead of 430. The result is terrible, the validation accuracy is incredibly small even with a git training set, never performing better than 0.6. Maybe the differences in the movements of the left and the right hands, using the mouse, are less sharp than the ones recorded using the touchpad. For the moment we will go back using the old touchpad dataset. 
 
-### GRU instead of LSTM - 10[🡅](#iterations-index)
+### GRU instead of LSTM - 10[△](#iterations-index)
 A popular variation to the LSTM network is the GRU network (Gated Recurrent Unit), which is generally faster to train. The first impression is very positive: the accuracy is good and looks much more stable. In addition to that, we also add the possibility to introduce a variable number of convolutional layers between the raw data and the GRU unit:
 
 ```python
@@ -326,13 +326,13 @@ It is also interesting to isolate the effect of the presence of convolutional la
 The presence of convolutional layers seems to increase the learning speed, moreover leads to cleaner results: the thickness of the shadow showing the variance of the signal decreases. For the future, we set the number of convolutional layers to be 3. 
 
 
-### GRU and overfitting - 11[🡅](#iterations-index)
+### GRU and overfitting - 11[△](#iterations-index)
 Now the training accuracy is great, but the validation accuracy does not increase more than 70-75%. After around 75 epochs of training, the validation accuracy stops to increase. This is a symptom of overfitting. To try to fix this we changed the GRU unit size (to reduce the complexity of the model) and introduce two dropout steps: recurrent dropout within the GRU layer, and classic dropout in between the convolutional layers. As we can see in the plot below none of these techniques worked out, but actually, reduce the performance of the model.
 
 ![model 11 overfit](./plots/model_11_overfit.png)
 
 
-### GRU with mouse movement - 12[🡅](#iterations-index)
+### GRU with mouse movement - 12[△](#iterations-index)
 
 Since the bottleneck might still be the training size, we decide to try again our bigger dataset (the one obtained using mouse movements instead of touchpad ones). We study again the accuracy as a function of the training size.
 
@@ -341,3 +341,16 @@ Since the bottleneck might still be the training size, we decide to try again ou
 Similarly to the touchpad dataset the accuracy hits its maximum at around 500 batches of training. This time it is clear that having more training datapoints does not improve the performance of the model.
 
 
+### Training size and regularizers - 13[△](#iterations-index)
+
+In the previous section, we realized that we are not limited by the size of the training data. Using the same training dataset we can try to train our model with bigger batches, which effectively reduces the number of batches available. At the same time it will increase the minimum time required for the model to perform a guess: twice the batch size, twice is the recording time needed. Nevertheless, the accuracy might increase. 
+
+![batch and training size](./plots/batch_size_13.png)
+
+On the most left plot, we see how bigger batch size generally corresponds to an improvement of the model performance. The accuracy saturates around a batch size of 500. On the central plot and on the most right one, we test if the amount of training data is enought even for larger batches. The answer is positive since we observe saturation in both cases. With a batch size of 800, we reach a validation accuracy higher than 80%.
+
+Using a batch size of 800 we try to fill the gap between validation accuracy and training accuracy playing with the GRU unit size, the number of convolutional layers and the l1 regularizer within the GRU unit.
+
+![gru_size conv regularizer](./plots/gru_conv_reg_13.png)
+
+None of those methods provide improvements to accuracy. The GRU unit size seems not to affect the accuracy substantially. The number of convolutional layers is relevant, but we were already using 3 of them, which corresponds to the best performance. The l1 regularization technique seems detrimental, always reducing the validation accuracy.
